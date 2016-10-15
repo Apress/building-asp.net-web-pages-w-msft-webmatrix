@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Twitter Examples</h1>
+        <p><a href="Default">Back to menu</a></p>
+        <h2>Twitter Buttons</h2>
+        <div>
+            @Twitter.FollowButton("stevelydford", followStyle: "follow_me")
+            @Twitter.FollowButton("stevelydford", followStyle: "follow_us")
+            @Twitter.FollowButton("stevelydford", followStyle: "twitter")
+            @Twitter.FollowButton("stevelydford", followStyle: "t_logo")
+            @Twitter.FollowButton("stevelydford", followStyle: "t_small")
+            @Twitter.FollowButton("stevelydford", followStyle: "t_mini")
+        </div>
+        <div>
+            @Twitter.FollowButton("stevelydford", followStyle: "follow_us", followColor: "a")
+            @Twitter.FollowButton("stevelydford", followStyle: "follow_us", followColor: "b")
+            @Twitter.FollowButton("stevelydford", followStyle: "follow_us", followColor: "c")
+        </div>
+        <div>
+            @Twitter.TweetButton(tweetText: "Check this out!", 
+                     userName: "stevelydford",
+                     relatedUsername: "Apress",
+                     relatedUserDescription: "Great selection of tech books")
+        </div>
+        <h2>Twitter Feeds</h2>
+        <div>
+            @Twitter.Search("Football", tweetsBackgroundColor: "#eeeeee")
+        </div>
+        <div>
+            @Twitter.Profile("stevelydford")
+            @Twitter.Faves("stevelydford")
+        </div>
+        <div>
+            @Twitter.List("stevelydford", "web-development")
+        </div>
+        
+    </body>
+</html>

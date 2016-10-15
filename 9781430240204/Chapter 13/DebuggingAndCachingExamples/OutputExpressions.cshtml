@@ -1,0 +1,32 @@
+﻿@{
+    var cars = new string[] { "Ferrari", 
+                              "Aston Martin", 
+                              "Porsche",
+                              "Lamborghini",
+                              "McLaren" }; 
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Output Expression Example</title>
+    </head>
+    <body>
+        <h1>Output Expressions Example</h1>
+        <p><a href="Default">Back to menu</a></p>
+        
+        <ul>
+            @for (int i = 0; i < cars.GetUpperBound(0); i++)
+            {
+                <li>
+                    @cars[i]
+                
+                    @* Output "for loop" indexer for debugging *@
+                    @i
+                
+                </li>
+            }
+        </ul>
+    </body>
+</html>

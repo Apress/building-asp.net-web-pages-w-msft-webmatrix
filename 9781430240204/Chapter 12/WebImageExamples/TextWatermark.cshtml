@@ -1,0 +1,59 @@
+﻿@{  
+    WebImage originalImage = null;
+    WebImage watermarkedImage = null;
+    var imageFileName = "";
+
+    if(IsPost)
+    {
+        originalImage = WebImage.GetImageFromRequest();
+        if(originalImage != null)
+        {
+            imageFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(originalImage.FileName);
+
+            originalImage.Save(@"~\images\" + imageFileName);
+            
+            watermarkedImage = originalImage.AddTextWatermark("Sample Watermark",
+                                                              fontColor:"#00FFFF",
+                                                              fontSize: 20,
+                                                              fontFamily: "Tahoma",
+                                                              horizontalAlign: "Center",
+                                                              verticalAlign: "Top",
+                                                              padding: 15); 
+            watermarkedImage.Save(@"~\images\watermarked_" + imageFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Text Watermark</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Image to upload:", "imageUpload")
+            <input type="file" name="imageUpload" /><br/>
+            <input type="submit" value="Upload Image" />
+        </form>
+            
+        <h1>Uploaded Images</h1>
+        
+        @if(imageFileName != "")
+        {
+            <div style="float:left; margin-right: 10px;">
+                Original Image: <br />
+                <img src="images/@imageFileName" alt="Original Image" />
+            </div>
+            <div>
+                Watermarked Image: <br />
+                <img src="images/watermarked_@(imageFileName)" alt="Watermarked Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>
+

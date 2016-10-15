@@ -1,0 +1,31 @@
+﻿@functions {
+
+    public static int CurrentAge (DateTime dateOfBirth)
+    {
+        DateTime today = DateTime.Today;
+        int years = today.Year - dateOfBirth.Year;
+        // Subtract a year if this year's birthday hasn't happened yet
+        if (today.Month < dateOfBirth.Month || (today.Month == dateOfBirth.Month && today.Day < dateOfBirth.Day))
+        {
+            years--;
+        }
+        return years;
+    }
+    
+    public static int DaysToNextBirthday (DateTime dateOfBirth)
+    {
+        DateTime today = DateTime.Today;
+        DateTime next = new DateTime(today.Year, dateOfBirth.Month, dateOfBirth.Day);
+
+        // Add a year if this years birthday has already happened
+        if (next < today) 
+        {
+            next = next.AddYears(1);
+        }
+        
+        int days = (next - today).Days;
+
+        return days;
+    }  
+}
+

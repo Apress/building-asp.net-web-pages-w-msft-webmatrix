@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    Page.Title = "Home Page";
+    
+    var db = Database.Open("TechieTogsData");   
+    var sqlSelect = "SELECT * FROM Products " + 
+                    "INNER JOIN Settings ON Products.ProductID = Settings.featuredProduct";
+  
+    var product = db.QuerySingle(sqlSelect);
+}
+
+@if (product != null)
+{   
+    <h1 class="homePageHeading">Featured Product</h1>
+    <div id="featuredProductImage">      
+        <p>@Products.ShowProductImage(product.productID.ToString())</p>
+    </div>
+    <div id="featuredProductDetails">
+        <a href="/ProductDetails/@product.productID">
+            <h2>@product.title</h2>
+        </a>
+        <p>
+            @product.description
+        </p>
+        <p class="price">
+            £@product.price
+        </p>
+        <p>
+            <a href="/ProductDetails/@product.productID" class="detailsButton">
+                More Details
+            </a>
+        </p>
+    </div>
+}
+
+@{
+    sqlSelect = "SELECT TOP 4 COUNT(productID) AS productCount, productId " + 
+                "FROM OrderItems GROUP BY productID ORDER BY productCount DESC";
+    var mostPopular = db.Query(sqlSelect);
+}
+@if (mostPopular.Count() > 0)
+{
+    <div id="popularProducts">
+        <h1 class="homePageHeading">Most Popular Products</h1>
+        <ul id="popularProductsList">
+            @foreach (var item in mostPopular) {
+                <li>
+                    <a href="/ProductDetails/@item.productID" class="detailsButton">
+                        @Products.ShowProductThumbnail(item.productID.ToString())
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

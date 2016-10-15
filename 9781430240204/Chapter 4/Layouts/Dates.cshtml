@@ -1,0 +1,18 @@
+﻿@{ 
+    DateTime birthday = new DateTime(1981, 12, 8);
+    int age = @DateFunctions.CurrentAge(birthday);
+    int daysToBirthday = @DateFunctions.DaysToNextBirthday(birthday);
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <p>Your current age is @age</p>
+        <p>@daysToBirthday days until you are @(age + 1)</p>
+    </body>
+</html>

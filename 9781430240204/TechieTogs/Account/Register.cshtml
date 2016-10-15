@@ -1,0 +1,79 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    Page.Title = "Register";
+    
+    var email = "";
+    var password1 = "";
+    var password2 = "";
+
+    if(IsPost)
+    {
+        WebSecurity.Logout();
+        
+        email = Request["email"];
+        password1 = Request["password1"];
+        password2 = Request["password2"];
+        
+        // Validation
+	    if (email.IsEmpty()) {
+            ModelState.AddError("email", "Email Address is required.");
+        }
+        
+        if (!Validation.IsValidEmail(email))
+        {
+            ModelState.AddError("email", "Invalid Email Address.");
+        }
+
+        if (password1.IsEmpty()) {
+            ModelState.AddError("password1", "Password is required.");
+        }
+
+        if(WebSecurity.UserExists(email))
+        {
+            ModelState.AddError("email", "An account with this name already exists.");
+        }
+
+        if(password1 != password2)
+        {
+            ModelState.AddError("password1", "The passwords do not match.");
+        }
+        
+        // Create Account
+        if(ModelState.IsValid)
+        {
+            WebSecurity.CreateUserAndAccount(email, password1, null, false);
+            WebSecurity.Login(email, password1);
+            if (Request.QueryString["sender"] != null)
+            {
+                Response.Redirect(Request.QueryString["sender"]);   
+            }
+            else
+            {
+                Response.Redirect("~/Default");
+            }
+        }  
+    }
+
+}
+
+<h1>Register New Account</h1>
+<form action="Register?@Request.QueryString" method="post" class="accountForm">
+    <p>
+        @Html.Label("Email Address: ", "email")<br />
+        @Html.TextBox("email", email)
+        @Html.ValidationMessage("email")
+    </p>
+    <p>
+        @Html.Label("Password: ", "password1")<br />
+        @Html.Password("password1", password1)
+        @Html.ValidationMessage("password1")
+    </p>
+    <p>
+        @Html.Label("Confirm Password: ", "password2")<br />
+        @Html.Password("password2", password2)
+    </p>
+    <p>
+         <input type="submit" value="Register" />
+    </p>
+</form>

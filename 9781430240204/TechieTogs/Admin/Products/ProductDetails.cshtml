@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Edit Category";
+     
+    var productId = "new";
+    var title = "";
+    var price = "";
+    var description = "";
+    var keywords = "";
+    var category = "";
+
+    var db = Database.Open("TechieTogsData");
+    
+    if (!UrlData[0].IsEmpty())
+    {
+        productId = UrlData[0];
+        
+        var sqlCommand = "SELECT * FROM Products WHERE productID = @0";
+        var product = db.QuerySingle(sqlCommand, productId);
+        
+        title = product.title;
+        price = product.price.ToString();
+        description = product.description;
+        keywords = product.keywords;
+        category = product.category.ToString();
+    }
+    
+    if(IsPost)
+    {
+        productId = Request["productId"];
+        title = Request["title"];
+        price = Request["price"];
+        description = Request["description"];
+        keywords = Request["keywords"];
+        category = Request["category"];
+        
+        // Validation 
+        if (title.IsEmpty())
+        {
+            ModelState.AddError("title", "Product Title cannot be blank");
+        }
+        
+        if (price.IsEmpty())
+        {
+            ModelState.AddError("price", "Price is required");
+        }
+        
+        if (description.IsEmpty())
+        {
+            ModelState.AddError("description", "Description cannot be blank");
+        }
+        
+        if(ModelState.IsValid)
+        {
+            var sql = "";
+            if (productId == "new")
+            {
+                // Insert new product record
+                sql = "INSERT INTO Products (title, price, description, " + 
+                    "keywords, category) VALUES (@0, @1, @2, @3, @4)";
+                
+                db.Execute(sql, title, price, description,
+                        keywords, category, productId);
+                
+                productId = db.GetLastInsertId().ToString();
+            }
+            else
+            {
+                // Update existing product record
+                sql = "UPDATE Products SET title = @0, price = @1, " +
+                    "description = @2, keywords = @3, category = @4 " +
+                    "WHERE productId = @5";
+                
+                db.Execute(sql, title, price, description,
+                        keywords, category, productId);
+            }
+    
+            // Product image
+            var productImage = WebImage.GetImageFromRequest();
+            if(productImage != null)
+            {
+                // Save main product image
+                var savePath = @"~\ProductImages\" + productId;
+                productImage.Save(filePath: savePath + ".png", 
+                                    imageFormat: "png",
+                                    forceCorrectExtension: true );
+                
+                // Resize and save thumbnail
+                productImage.Resize(height: 120, width: 120, 
+                                    preserveAspectRatio: true);
+                productImage.Save(filePath: savePath + "_thumb.png", 
+                                    imageFormat: "png",
+                                    forceCorrectExtension: true );
+            }
+                    
+            Response.Redirect("~/Admin/Products/");
+        }
+    }
+
+}
+
+<h1>Product Details</h1>
+<div id="productForm">
+    <form action="" method="post" enctype="multipart/form-data">
+        <p>
+            @Html.Hidden("productId", productId)
+            @Html.Label("Title:", title)<br />
+            @Html.TextBox("title", title)
+            @Html.ValidationMessage("title")
+        </p>
+        <p>
+            @Html.Label("Price:", price)<br />
+            @Html.TextBox("price", price, new { @class="short" })
+            @Html.ValidationMessage("price")
+        </p>
+        <p>
+            @Html.Label("Description:", description)<br />
+            @Html.TextArea("description", description, 10, 40, null)
+            @Html.ValidationMessage("description")
+        </p>
+        <p>
+            @Html.Label("Keywords:", keywords)<br />
+            @Html.TextBox("keywords", keywords)
+        </p>
+        <p>
+            @Html.Label("Category:", category)<br />
+            @Products.CategoriesDropDownList("category", category)
+        </p>  
+        <p>
+            @Html.Label("Product Image:", "productImage")<br />
+            <input type="file" name="productImage" />
+        </p>
+        <p>
+            <input type="submit" value="Update" />
+        </p>
+    </form>
+</div>
+<div id="productFormImage">
+    @Products.ShowProductImage(productId)
+</div>
+

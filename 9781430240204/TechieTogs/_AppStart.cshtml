@@ -1,0 +1,13 @@
+﻿@{
+    WebSecurity.InitializeDatabaseConnection("TechieTogsData",
+        "UserProfile", "UserId", "Email", true);
+
+    WebMail.SmtpServer = "smtp.gmail.com";
+    WebMail.SmtpPort = 587;
+    WebMail.EnableSsl = true;
+    WebMail.UserName = "your_username_here@gmail.com";
+    WebMail.From = "your_username_here@gmail.com";
+    WebMail.Password = "your_password_here";
+
+}
+

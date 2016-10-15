@@ -1,0 +1,35 @@
+﻿@{
+    var chartFileName = "_Charts/SalesChart01.jpg";
+    if (!File.Exists(Server.MapPath(chartFileName))) {
+        
+        var sales = new Dictionary<string, int>()
+        {
+            { "Books", 10 },
+            { "DVDs", 7 },
+            { "Games", 12 },
+            { "Music", 5 },
+            { "Toys", 9 }
+        };
+        
+        var chartImage = new Chart(400, 300);
+        chartImage.AddTitle("Saved Chart");
+        chartImage.AddSeries(
+                name: "Sales",
+                xValue: sales.Keys,
+                yValues: sales.Values);
+        chartImage.Save(path: chartFileName);
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Saved Chart Example</title>
+    </head>
+    <body>
+        <img src="@chartFileName" />
+    </body>
+</html>
+

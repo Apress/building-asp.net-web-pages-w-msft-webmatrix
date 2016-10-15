@@ -1,0 +1,73 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    Page.Title = "Login";
+    
+    var email = "";
+    var password = "";
+   
+    if(IsPost)
+    {
+        email = Request["email"];
+        password = Request["password"];
+        var rememberMe = Request["rememberMe"].AsBool();
+        
+        // Validation
+        if (email.IsEmpty()) {
+            ModelState.AddError("email", "Username cannot be blank.");
+        }
+        
+        if (password.IsEmpty()) {
+            ModelState.AddError("password", "Password cannot be blank.");
+        }
+        
+        // Attempt login
+        if(ModelState.IsValid)
+        {
+            if(WebSecurity.Login(email, password, rememberMe))
+            {
+                if (Request.QueryString["sender"] != null)
+                {
+                    Response.Redirect(Request.QueryString["sender"]);   
+                }
+                else
+                {
+                    Response.Redirect("~/Default");
+                }
+            }
+            else
+            {
+                ModelState.AddFormError("Unable to log in.");
+            }
+        }
+    }
+}
+
+
+<h1>Login</h1>
+@Html.ValidationSummary(true)
+<form action="Login?@Request.QueryString" method="post" class="accountForm">
+    <p>Please log in. If you do not have an exisiting account please <a href="../Account/Register?@Request.QueryString">register</a>.</p>
+    <p>
+        @Html.Label("Email Address: ", "email")<br />
+        @Html.TextBox("email", email)
+        @Html.ValidationMessage("email")
+    </p>
+    <p>
+        @Html.Label("Password: ", "password")<br />
+        @Html.Password("password")
+        @Html.ValidationMessage("password")
+    </p>
+    <p>
+        @Html.CheckBox("rememberMe", new { value = "true" })
+        @Html.Label("Remember me on this computer?", "rememberMe")
+    </p>
+    
+    <p>
+         <input type="submit" value="Login" />
+    </p>
+    <p>
+        <a href="ForgottenPassword">Forgotten Password?</a>
+    </p>
+</form>
+

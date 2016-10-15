@@ -1,0 +1,56 @@
+﻿@{
+    if (IsPost){
+        string name = Request["name"];
+        string description = Request["description"];
+        decimal price = Request["price"].AsDecimal();
+        bool discount = Request["discount"].AsBool();
+        
+        <div>
+            <em>Product details added.</em><br />
+            Product Name: @name<br />
+            Description: @description<br />
+            Price: @price<br />
+            Discount Available? @discount<br />
+            @if(discount)
+            {
+                <text>
+                    Discounted Price: @(price / 2)
+                </text>
+            }
+        </div>
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Add Product</title>
+</head>
+<body>
+    <form action="" method="post">
+        <fieldset>
+            <legend>Add New Product</legend>
+            <div>
+                @Html.Label("Name: ", "name")
+                @Html.TextBox("name")
+            </div>
+            <div>
+                @Html.Label("Description: ", "description")
+                @Html.TextArea("description", "", 5, 40, null)
+            </div>
+            <div>
+                @Html.Label("Price: ", "price")
+                @Html.TextBox("price")
+            </div>
+            <div>
+                @Html.Label("Discount Available? ", "discount")
+                @Html.CheckBox("discount", new { value = "true" })
+            </div>
+        </fieldset>
+        <div>
+            <input type="submit" value="Submit Form" />
+        </div>
+    </form>
+</body>
+</html>

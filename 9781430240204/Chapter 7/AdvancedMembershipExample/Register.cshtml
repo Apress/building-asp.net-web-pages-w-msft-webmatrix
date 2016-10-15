@@ -1,0 +1,108 @@
+﻿@{
+    var username = "";
+    var email = "";
+    var password1 = "";
+    var password2 = "";
+    
+    if(IsPost)
+    {
+        WebSecurity.Logout();
+        
+        username = Request["username"];
+        email = Request["email"];
+        password1 = Request["password1"];
+        password2 = Request["password2"];
+        
+        // Validation
+        if (username.IsEmpty()) {
+            ModelState.AddError("username", "Username is required.");
+        }
+        
+        if (email.IsEmpty()) {
+            ModelState.AddError("email", "Email Address is required.");
+        }
+        
+        if (password1.IsEmpty()) {
+            ModelState.AddError("password1", "Password is required.");
+        }
+        
+        if(WebSecurity.UserExists(username))
+        {
+            ModelState.AddError("username", "An account with this name already exists.");
+        }
+        
+        if(password1 != password2)
+        {
+            ModelState.AddError("password1", "The passwords do not match.");
+        }
+        
+        // Create Account
+        if(ModelState.IsValid)
+        {
+            var token = WebSecurity.CreateUserAndAccount(userName: username,
+                            password: password1,
+                            propertyValues: new { emailAddress = email },
+                            requireConfirmationToken: true);
+            
+            // Generate confirmation link URL
+            var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, 
+                                                UriFormat.Unescaped);
+            var confirmAccountUrl = hostUrl + 
+                            "/ConfirmAccount?confirmationToken=" + 
+                            HttpUtility.UrlEncode(token);
+            
+            // Send confirmation email
+            WebMail.Send(to: email,
+                subject: "Thank you for registering - " + username,
+                body: "Please visit <a href='" + confirmAccountUrl + "'>" + confirmAccountUrl +
+                    "</a> to activate your account."
+            );
+        
+            Response.Redirect("ConfirmSent");
+        }
+
+    }
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Register</title>
+        <style>
+            .validation-summary-errors,
+            span.field-validation-error { color: #FF0000; }
+            input.field-validation-error { border: 1px solid #FF0000;
+                                           background-color: #FFCCCC; }
+        </style>
+    </head>
+    <body>
+        <h1>Register</h1>
+        @Html.ValidationSummary("Unable to create account. Please correct the following:")
+        <form action="Register" method="post">
+            <div>
+                @Html.Label("Username: ", "username")<br />
+                @Html.TextBox("username", username)
+                @Html.ValidationMessage("username")
+            </div>
+            <div>
+                @Html.Label("Email Address: ", "email")<br />
+                @Html.TextBox("email", email)
+                @Html.ValidationMessage("email")
+            </div>
+
+            <div>
+                @Html.Label("Password: ", "password1")<br />
+                @Html.Password("password1", password1)
+                @Html.ValidationMessage("password1")
+            </div>
+            <div>
+                @Html.Label("Confirm Password: ", "password2")<br />
+                @Html.Password("password2", password2)
+            </div>
+            <div>
+                 <input type="submit" value="Register" />
+            </div>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@RenderSection("title")</title>
+    </head>
+    <body>
+        @RenderPage("/Shared/_Header.cshtml")
+        
+        <div content="links">
+            @RenderSection("links")
+        </div>
+        
+        <div id="content">
+            @RenderBody()
+        </div>
+        
+        @RenderPage("/Shared/_Footer.cshtml")
+    </body>
+</html>
+

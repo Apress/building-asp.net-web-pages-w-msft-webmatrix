@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    
+    var message = UrlData[0] == "404" ? "File Not Found" : "ERROR!";
+    Page.Title = message;
+}
+
+<h1>@message</h1>
+<p>
+    Unfortunately an error has occurred and
+    we were unable to process your request.
+</p>    
+<p>
+    <br />Please try browsing the categories 
+    listed on the left to view our full
+    product range.
+</p>

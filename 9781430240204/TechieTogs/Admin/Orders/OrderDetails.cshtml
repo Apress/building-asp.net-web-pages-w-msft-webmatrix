@@ -1,0 +1,87 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Order Details";
+    
+    var orderID = !UrlData[0].IsEmpty() ? UrlData[0] : "0";
+
+    var db = Database.Open("TechieTogsData");  
+
+    if (IsPost)
+    {
+        orderID = Request["orderID"];
+        var shipped = Request["shipped"].AsBool();
+        
+        var sqlUpdate = "UPDATE Orders SET OrderShipped = @0 WHERE OrderId = @1";
+        db.Execute(sqlUpdate, shipped, orderID);
+        
+        Response.Redirect("~/Admin/Orders/");
+    } 
+    
+    // Get Order header details
+    var sqlCommand = "SELECT Orders.*, UserProfile.Email FROM Orders " + 
+                     "INNER JOIN UserProfile ON Orders.UserId = UserProfile.UserId " +
+                     "WHERE OrderId = @0 ";
+    
+    var order = db.QuerySingle(sqlCommand, orderID);
+    
+    // Get Order items
+    var itemsSql = "SELECT * FROM OrderItems WHERE OrderID = @0";
+    var orderItems = db.Query(itemsSql, orderID);
+    
+}
+
+@if (order == null)
+{
+    <p>
+        Unable to fetch order details.
+    </p>
+}
+else
+{
+    <text>
+        <h1>Order Details</h1>
+        <p><strong>Order ID:</strong> @order.OrderId</p>
+        <p><strong>User:</strong> <a href="mailto:@order.Email">@order.Email</a></p>
+        <p><strong>Ordered: </strong>@order.OrderDateTime</p>
+        
+        <h2>Shipping Details</h2>
+        <p><strong>Address 1:</strong> @order.Address1</p>
+        <p><strong>Address 2:</strong> @order.Address2</p>
+        <p><strong>Town: </strong>@order.Town</p>
+        <p><strong>Region:</strong> @order.Region</p>
+        <p><strong>Postal Code:</strong> @order.PostalCode</p>
+        <p><strong>Country: </strong>@order.Country</p>
+        <p>
+            <form action="orderDetails" method="post" id="shippedForm">
+                @Html.Hidden("orderId", order.OrderId)
+                    Order Shipped? 
+                    @Html.CheckBox("shipped", order.OrderShipped, new { value = "true" })
+                    <input type="submit" value="Update" />
+            </form>
+        </p>
+        <h2>Order Items</h2>
+        <table id="cartTable">
+            <tr>
+                <th class="product">Product</th>
+                <th class="size">Size</th>
+                <th class="price">Price</th>
+            </tr>
+            
+            @foreach (var item in orderItems)
+            {
+                <tr>
+                    <td class="product">@Products.GetProductNameFromId(item.ProductID)</td>
+                    <td class="size">@item.Size</td>
+                    <td class="price">£@item.Price</td>
+                </tr>
+            }
+            
+            <tr class="cartTotal">
+                <td colspan="2">&nbsp;</td>
+                <td>Total: £@order.OrderTotal</td>
+            </tr>
+        </table>
+    </text>
+}
+

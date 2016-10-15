@@ -1,0 +1,18 @@
+﻿@* Admin Functions *@
+@functions {
+
+    public static bool CategoryExists(string categoryTitle)
+    {
+        var db = Database.Open("TechieTogsData");
+        var sqlQuery = "SELECT categoryID FROM Categories WHERE categoryTitle = @0";
+        return db.Query(sqlQuery, categoryTitle).Count() > 0;
+    }
+    
+    public static bool CategoryIsEmpty(string categoryId)
+    {
+        var db = Database.Open("TechieTogsData");
+        var sqlQuery = "SELECT ProductID FROM Products WHERE category = @0";
+        return db.Query(sqlQuery, categoryId).Count() == 0;
+    }
+     
+}

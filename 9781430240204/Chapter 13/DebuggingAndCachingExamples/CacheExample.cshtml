@@ -1,0 +1,28 @@
+﻿@{
+    var dateTime = WebCache.Get("dateTime");
+    if (dateTime == null) 
+    {
+        dateTime = DateTime.Now;
+        WebCache.Set("dateTime", dateTime, 1, false);
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>WebCache Example</title>
+    </head>
+    <body>
+        <h1>WebCache Example</h1>
+        <p><a href="Default">Back to menu</a></p>
+        <p>
+           Current Date and Time: @DateTime.Now
+        </p>
+        <p>
+            Cached Date and Time: @dateTime
+        </p>
+    </body>
+</html>
+

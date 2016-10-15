@@ -1,0 +1,41 @@
+﻿@{ 
+    var employeeId  = UrlData[0];
+    if (employeeId.IsEmpty()) {
+         Response.Redirect(@Href("~/Default"));
+    }
+    
+    var db = Database.Open("DataExample");
+
+    if (IsPost)
+    {
+        var sqlDelete = "DELETE FROM Employees WHERE EmployeeId=@0";
+        db.Execute(sqlDelete, employeeId);
+        Response.Redirect("~/Default");
+    }
+
+    var sqlSelect = "SELECT Forenames, Surname FROM Employees WHERE EmployeeId=@0";
+    var row = db.QuerySingle(sqlSelect, employeeId);
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Delete Employee Record</title>
+    </head>
+    <body>
+        <h1>Delete Employee Record</h1>
+        <p>
+            Are you sure you want to delete employee @employeeId, @row.Forenames @row.Surname?
+        </p>
+        <p>
+            <form action="" method="post">
+                <input type="button" 
+                onclick="window.location.href='/default.cshtml';"
+                value="Cancel" />
+                <input type="submit" value="Delete" />
+            </form>
+        </p>
+    </body>
+</html>
+

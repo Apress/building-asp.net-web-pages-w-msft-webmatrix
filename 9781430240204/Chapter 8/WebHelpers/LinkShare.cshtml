@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <style>
+            #linkshare a { text-decoration:none }
+        </style>    
+    </head>
+    <body>
+        <h1>Linkshare Examples</h1>
+        <p><a href="Default">Back to menu</a></p>
+        <div id="linkshare">
+            <p>
+            @LinkShare.GetHtml("LinkShare Example")
+            </p>
+            <p>
+                @LinkShare.GetHtml("LinkShare Example",
+                                pageLinkBack: "http://www.asp.net",
+                                linkSites: new LinkShareSite[] { LinkShareSite.Digg, 
+                                                                LinkShareSite.Facebook,
+                                                                LinkShareSite.Reddit,
+                                                                LinkShareSite.StumbleUpon }
+                )
+            </p>               
+        </div>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Edit Category";
+    
+    var categoryId = !UrlData[0].IsEmpty() ? UrlData[0] : "0";
+    var categoryTitle = "";
+    
+    var db = Database.Open("TechieTogsData");
+
+    if(IsPost)
+    {
+        categoryId = Request["categoryId"];
+        categoryTitle = Request["categoryTitle"];
+        
+        // Validation 
+        if (categoryTitle.IsEmpty())
+        {
+            ModelState.AddError("categoryTitle", "Category Title cannot be blank");
+        }
+        
+        if(Admin.CategoryExists(categoryTitle))
+        {
+            ModelState.AddError("categoryTitle", "Category already exists");
+        }
+        
+        if(ModelState.IsValid)
+        {
+            var sqlUpdate = "UPDATE Categories SET CategoryTitle = @0 WHERE CategoryId = @1";
+            db.Execute(sqlUpdate, categoryTitle, categoryId);
+            
+            Response.Redirect("~/Admin/Categories/");
+        }
+    }
+    else
+    {
+            var sqlCommand = "SELECT * FROM Categories WHERE CategoryID = @0";
+            categoryTitle = db.QuerySingle(sqlCommand, categoryId).CategoryTitle;
+    }
+    
+    
+}
+
+<h1>Edit Category</h1>
+
+<form action="" method="post">
+    <p>
+        Category Title:
+        @Html.Hidden("categoryId", categoryId)
+        @Html.TextBox("categoryTitle", categoryTitle)
+        <input type="submit" value="Update" />
+        @Html.ValidationMessage("categoryTitle")
+    </p>
+</form>

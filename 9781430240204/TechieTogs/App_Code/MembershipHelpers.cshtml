@@ -1,0 +1,35 @@
+﻿@helper AccountSummary()
+{
+    var cartItemCount = 0;
+        
+    if (Session["cart"] != null)
+    {
+        cartItemCount = ((Cart)Session["cart"]).Items.Count;
+    }
+        
+    if(WebSecurity.IsAuthenticated) {
+        <text>
+            @Gravatar.GetHtml(WebSecurity.CurrentUserName, 
+                                imageSize:24, 
+                                defaultImage:"mm")
+        
+            Welcome <a href="@Href("~/Account/ChangePassword")">
+                        @WebSecurity.CurrentUserName
+                    </a> | 
+            <a href="@Href("~/Cart")">Cart - @cartItemCount item(s)</a> | 
+            <a href="@Href("~/Account/Logout")">Logout</a>
+            @if (Roles.IsUserInRole(WebSecurity.CurrentUserName, "Admin"))
+            {
+                <text>
+                    | <a href="@Href("~/Admin/Default")">Admin</a>
+                </text>   
+            }
+        </text>
+    } else {
+        <text>
+            <a href="@Href("~/Account/Login")">Login</a> |
+            <a href="@Href("~/Cart")">Cart - @cartItemCount item(s)</a> | 
+            <a href="@Href("~/Account/Register")">Register</a>
+        </text>
+    }
+}

@@ -1,0 +1,23 @@
+﻿@helper AccountSummary()
+{
+    <div id="accountSummary">
+        @if(WebSecurity.IsAuthenticated) {
+            <p>
+                Welcome <a href="@Href("~/ChangePassword")">@WebSecurity.CurrentUserName</a> | 
+                <a href="@Href("~/Logout")">Logout</a>
+                @if (Roles.IsUserInRole(WebSecurity.CurrentUserName, "Administrators"))
+                {
+                    <text>
+                        | <a href="@Href("~/Admin/Roles")">Roles Administration</a>
+                    </text>
+                }
+            </p>
+        } else {
+            <p>
+                <a href="@Href("~/Login")">Login</a> |
+                <a href="@Href("~/Register")">Register</a>
+            </p>
+        }
+    </div> 
+}
+

@@ -1,0 +1,29 @@
+﻿@{
+    var message = "This example shows the ObjectInfo helper at work.";
+    var activityDate = DateTime.Now;
+    var cars = new List<String>() { "Ferrari", 
+                                    "Aston Martin", 
+                                    "Porsche",
+                                    "Lamborghini",
+                                    "McLaren" }; 
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Object Info Example</title>
+    </head>
+    <body>
+        <h1>Object Info Example</h1>
+        <p><a href="Default">Back to menu</a></p>
+        
+        <p>
+            @message
+        </p>
+        @ObjectInfo.Print(message)
+        @ObjectInfo.Print(activityDate)
+        @ObjectInfo.Print(cars)
+    </body>
+</html>

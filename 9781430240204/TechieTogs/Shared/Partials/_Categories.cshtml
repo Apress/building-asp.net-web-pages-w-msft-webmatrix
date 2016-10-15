@@ -1,0 +1,12 @@
+﻿@{
+    var db = Database.Open("TechieTogsData");
+    var sqlSelect = "SELECT * FROM Categories;";
+}
+
+<ul>
+@foreach (var category in db.Query(sqlSelect))
+{
+    <li><a href="/Products/@category.categoryTitle">@category.categoryTitle</a></li>
+}
+</ul>
+

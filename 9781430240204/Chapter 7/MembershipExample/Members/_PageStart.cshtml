@@ -1,0 +1,7 @@
+﻿@{
+    if (!WebSecurity.IsAuthenticated)
+    {
+        string currentUrl = Request.Url.ToString();
+        Response.Redirect("~/Login?sender=" + currentUrl);
+    }
+}

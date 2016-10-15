@@ -1,0 +1,54 @@
+﻿@{  
+    WebImage originalImage = null;
+    WebImage flippedAndRotatedImage = null;
+    var imageFileName = "";
+
+    if(IsPost)
+    {
+        originalImage = WebImage.GetImageFromRequest();
+        if(originalImage != null)
+        {
+            imageFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(originalImage.FileName);
+
+            originalImage.Save(@"~\images\" + imageFileName);
+            
+            flippedAndRotatedImage = originalImage.RotateRight().FlipHorizontal();
+            
+            flippedAndRotatedImage.Save(@"~\images\flippedAndRotated_" + imageFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Resizing Images</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Image to upload:", "imageUpload")
+            <input type="file" name="imageUpload" /><br/>
+            <input type="submit" value="Upload Image" />
+        </form>
+            
+        <h1>Uploaded Images</h1>
+        
+        @if(imageFileName != "")
+        {
+            <div style="float:left; margin-right: 10px;">
+                Original Image: <br />
+                <img src="images/@imageFileName" alt="Original Image" />
+            </div>
+            <div>
+                Flipped and Rotated Image: <br />
+                <img src="images/flippedAndRotated_@(imageFileName)" alt="Manipulated Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>
+

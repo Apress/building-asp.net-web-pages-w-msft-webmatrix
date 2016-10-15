@@ -1,0 +1,54 @@
+﻿@{  
+    WebImage originalImage = null;
+    WebImage croppedImage = null;
+    var imageFileName = "";
+
+    if(IsPost)
+    {
+        originalImage = WebImage.GetImageFromRequest();
+        if(originalImage != null)
+        {
+            imageFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(originalImage.FileName);
+
+            originalImage.Save(@"~\images\" + imageFileName);
+            
+            croppedImage = originalImage.Crop(top: 50, left: 50,
+                                              bottom: 50, right: 50);
+            
+            croppedImage.Save(@"~\images\cropped_" + imageFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Cropping Images</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Image to upload:", "imageUpload")
+            <input type="file" name="imageUpload" /><br/>
+            <input type="submit" value="Upload Image" />
+        </form>
+            
+        <h1>Uploaded Images</h1>
+
+        @if(imageFileName != "")
+        {
+            <div style="float:left; margin-right: 10px;">
+                Original Image: <br />
+                <img src="images/@imageFileName" alt="Original Image" />
+            </div>
+            <div>
+                Cropped Image: <br />
+                <img src="images/cropped_@(imageFileName)" alt="Cropped Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>

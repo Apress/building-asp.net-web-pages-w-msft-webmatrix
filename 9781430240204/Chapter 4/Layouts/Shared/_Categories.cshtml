@@ -1,0 +1,12 @@
+﻿<div>
+    <h2>Categories</h2>
+    <ul>
+        @{
+            foreach (var category in PageData["categories"])
+            {
+                <li>@category</li>
+            }
+        }
+    </ul>
+</div>
+

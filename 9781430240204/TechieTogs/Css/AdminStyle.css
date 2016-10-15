@@ -1,0 +1,98 @@
+/* General Styles
+---------------------------------*/
+h2 {
+    width: 30%;
+    border-bottom: 1px dashed #cdcdcd;
+    margin: 25px 0px 20px 0px;
+}
+
+textarea {
+    font-family: Verdana, Helvetica, Sans-Serif;
+}
+
+/* Menu
+---------------------------------*/
+#adminMenu {
+    float:left;
+    width:150px;
+}
+
+#adminMenu ul {
+    border-bottom: 1px solid #cdcdcd;
+    margin-bottom: 20px;
+}
+
+#adminMenu ul li {
+    list-style: none;
+    border-top: 1px solid #cdcdcd;
+    margin: 0;
+    padding: 10px;
+}
+
+#adminMenu ul li:hover {
+    background-color: #ddd;
+}
+
+#adminMenu .title {
+    margin-bottom: 20px;
+    text-align:center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Grid
+---------------------------------*/
+.grid { 
+    margin-top: 20px;
+    border-collapse: collapse; 
+    width: 100%; 
+}
+
+.grid td {
+    padding: 5px;
+ }
+
+.gridHeader {
+    background-color: #fff;
+    font-weight: bold; 
+    text-align: left;
+    border-bottom: 1px solid #cdcdcd;
+}
+
+.gridAlt { 
+    background-color: #f7f7f7; 
+}
+
+.gridFooter {
+    border-top: 1px solid #cdcdcd;
+}
+
+.grid tr #mainColumn {
+    width: 100%;
+}
+
+/* Forms
+---------------------------------*/
+#shippedForm, #deleteForm {
+    margin-top: 15px;
+}
+
+#productForm
+{
+    float: left;
+    width: 350px;
+}
+
+#productFormImage
+{
+    float: left;
+    width: 330px;
+}
+
+#productForm label {
+    font-weight: bold;
+}
+
+#productForm p {
+    padding: 5px 0px 5px 0px;
+}

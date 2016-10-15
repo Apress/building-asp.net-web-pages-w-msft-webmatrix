@@ -1,0 +1,76 @@
+﻿@{
+    var roleName = Request["roleName"];
+    
+    if(IsPost)
+    {
+        // Assign user to role
+        var userName = Request["newUser"];
+        
+        if (!Roles.IsUserInRole(userName, roleName))
+        {
+            Roles.AddUsersToRoles(
+                new [] { userName }.ToArray(),
+                new [] { roleName }.ToArray()
+            );
+        }
+    }
+    
+    // Get all current role members
+    var usersInRole = Roles.GetUsersInRole(roleName);
+    
+    // Get all users from database and create a list of SelectListItems
+    var db = Database.Open("MembershipExample");
+    var sqlCommand = "SELECT UserName FROM UserProfile ORDER BY UserName";
+    
+    List<SelectListItem> allUsers = new List<SelectListItem>();
+    foreach(var item in db.Query(sqlCommand))
+    {
+        allUsers.Add(new SelectListItem { Text = item.UserName });
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Role Details</title>
+    </head>
+    <body>
+        <h1>Role Details - @roleName</h1>
+        <div>
+            @if(usersInRole.Length > 0)
+            {
+                @* List all current role members *@
+                <ul>
+                    @foreach(var user in usersInRole)
+                    {
+                        <li>@user 
+                            <a href="RemoveUserFromRole?roleName=@roleName&userName=@user">
+                                [Remove]
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No users currently attached to this role.</p>
+                <p><a href="DeleteRole?roleName=@roleName">Delete this role</a></p>
+            }
+        </div>
+        <div>
+        @* Form to assign users to the current role *@
+            <h2>Add User</h2>
+            <form action="RoleDetails" method="post">
+                @Html.Hidden("roleName", roleName)
+                @Html.Label("User: ", "newUser")
+                @Html.DropDownList("newUser", allUsers)
+                <input type="submit" value="Add User" name="addUser" />
+            </form>
+        </div>
+        <p>
+            <a href="Roles.cshtml">Back to Roles</a>
+        </p>
+    </body>
+</html>

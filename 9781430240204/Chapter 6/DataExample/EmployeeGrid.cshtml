@@ -1,0 +1,60 @@
+﻿@{
+    var db = Database.Open("DataExample");
+    var sqlCommand = "SELECT Forenames, Surname, EmailAddress, Role FROM Employees ORDER BY Surname";
+    var result = db.Query(sqlCommand);
+    var employeeGrid = new WebGrid(source: result,
+                               defaultSort: "Surname",
+                               rowsPerPage: 3);
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Employee Grid</title>
+        <style type="text/css">
+            .grid { margin: 4px; border-collapse: collapse; width: 600px; }
+            .grid th, .grid td { border: 1px solid #CCC; padding: 5px; }
+            .header { background-color: #DDD; font-weight: bold; }
+            .header a { text-decoration: none; }
+            .alt { background-color: #EEE; color: #000; }
+            .name { width: 150px; }
+            .role { width: 200px; font-style: italic; }
+        </style>
+       
+    </head>
+    <body>
+        <h1>Employee Grid</h1>
+        <div id="grid">
+            @employeeGrid.GetHtml(
+                tableStyle: "grid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                mode: WebGridPagerModes.All,
+                firstText: "First",
+                previousText: "Prev",
+                nextText: "Next",
+                lastText: "Last",
+                columns: employeeGrid.Columns(
+                    employeeGrid.Column("Surname", 
+                                        style: "name",
+                                        format: @<text>
+                                                    @item.Surname.ToUpper()
+                                                </text>),
+                    employeeGrid.Column("Forenames", 
+                                        style: "name"),
+                    employeeGrid.Column("EmailAddress", 
+                                        "Email Address",
+                                        format: @<text>
+                                                    <a href="mailto:@item.EmailAddress">
+                                                        @item.EmailAddress
+                                                    </a>
+                                                </text>),
+                    employeeGrid.Column("Role",
+                                        "Job Title", 
+                                        style: "role")
+                )
+            )
+        </div>
+    </body>
+</html>

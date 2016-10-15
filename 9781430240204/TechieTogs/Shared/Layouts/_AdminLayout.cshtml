@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>TechieTogs - @Page.Title</title>
+        <link href="@Href("~/Css/Style.css")" rel="stylesheet" />
+        <link href="@Href("~/Css/AdminStyle.css")" rel="stylesheet" />
+        
+        @RenderSection("head", required: false)
+        
+    </head>
+    <body>
+        <div id="page">
+            <div id="header">
+                <p class="logo"><a href="@Href("~/")">TechieTogs</a></p>
+                <div id="headerRight">
+                    <div id="accountSummary">@MembershipHelpers.AccountSummary()</div>
+                </div>
+            </div>
+            <div id="content">
+                <div id="adminMenu">
+                    @RenderPage("~/Shared/Partials/_AdminMenu.cshtml")
+                </div>
+                <div id="main">
+                    @RenderBody()
+                </div>
+            </div>
+            <div id="footer">
+                &copy;@DateTime.Now.Year TechieTogs. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>

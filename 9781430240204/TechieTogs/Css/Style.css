@@ -1,0 +1,365 @@
+/* General Styles
+---------------------------------*/
+*, html, body {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color:#efefef;
+    color: #333;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    font-size: .75em;
+}
+
+a:link {
+    color: #333399;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #333399;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #a70202;
+    text-decoration: none;
+}
+
+h1, h2 { 
+    margin-bottom: 10px;
+}
+
+input, select
+{
+    padding: 5px;
+}
+
+input[type="text"]
+{
+    border: 1px solid #cdcdcd;
+}
+
+/* Layout
+---------------------------------*/
+#page {
+    margin: 0 auto;
+    width: 960px;
+    background-color: #fff;
+}
+
+#header {
+    height: 60px;
+}
+
+#headerRight{
+    float:right;
+    margin-right: 20px;
+}
+
+#search {
+    text-align: right;
+    margin-top: 40px;
+}
+
+#accountSummary {
+    float:right;
+    margin-top: 10px;
+    text-align: right;
+}
+
+#accountSummary img {
+    vertical-align: middle;
+}
+
+#content, #footer {
+    border-top: 1px solid #cdcdcd;
+    clear: both;
+    margin: 0px 10px 0px 10px;
+    padding: 20px;
+}
+
+#footer {
+    color:#cdcdcd;
+    padding: 10px;
+    text-align: center;
+}
+
+.logo a {
+    float: left;
+    margin: 15px;
+    font-size: 3em;
+}
+
+#categories {
+    float:left;
+    width:150px;
+}
+
+#main {
+    float:right;
+    width: 720px;
+    margin-bottom: 20px;
+    border-left: 1px solid #cdcdcd;
+    padding-left:20px;
+}
+
+#categories ul {
+    border-bottom: 1px solid #cdcdcd;
+    margin-bottom: 20px;
+}
+
+#categories ul li {
+    list-style: none;
+    border-top: 1px solid #cdcdcd;
+    margin: 0;
+    padding: 10px;
+}
+
+#categories ul li:hover {
+    background-color: #ddd;
+}
+
+#main h1 {
+    border-bottom: 1px dashed #cdcdcd;
+}
+
+/* Product List
+---------------------------------*/
+#productsList {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#productsList li{
+    float: left;
+    margin: 12px;
+    width: 215px;
+}
+
+#productsList h3 {
+    font-size: 1.75em;
+    font-weight: normal;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+#productsList .price {
+    font-size: 1em;
+    font-style: italic;
+    color: #999;
+}
+
+/* Product Details
+---------------------------------*/
+
+#productDetails {
+    float: left;
+    width: 450px;
+}
+
+#productDetails .price {
+    font-size: 1em;
+    font-style: italic;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+#orderForm {
+    float:left;
+}
+
+#orderForm fieldset {
+    width: 230px;
+    margin: 0px;
+    padding: 10px;
+    border: 1px solid #cdcdcd;
+}
+
+#orderForm legend {
+    font-weight: bold;
+    padding:0px 10px 0px 10px;
+}
+
+#orderForm label {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+#orderForm p {
+    padding: 5px 0px 5px 0px;
+}
+
+#orderForm input[type="submit"] {
+    margin-top:20px;
+    padding: 5px;
+    width: 100%;
+}
+
+/* Search Results
+---------------------------------*/
+
+#searchResult li {
+    margin-top: 10px;
+    font-size: 1.2em;
+    list-style: none;
+}
+
+/* Cart
+---------------------------------*/
+
+#cartTable {
+    width: 100%;
+    border: none;
+    border-spacing:0px;
+}
+
+#cartTable th {
+    border-bottom: 1px solid #cdcdcd;
+}
+
+#cartTable td, th {
+    padding:5px;
+}
+
+#cartTable .product {
+    text-align:left;
+    width: 50%;
+}
+
+#cartTable .size {
+    text-align:center;
+    width: 10%;
+}
+
+#cartTable .price {
+    text-align:right;
+    width: 20%;
+}
+
+#cartTable .cartTotal td {
+    margin-top: 10px;
+    border-top: 1px solid #cdcdcd;
+    text-align:right;
+    font-weight:bold;
+}
+
+table .remove {
+    text-align:right;
+    width: 20%;
+}
+
+div #cartButtons {
+    text-align: center;
+    margin: 40px 0px 20px 0px;
+}
+
+.linkButton  {
+    border: 1px solid #cdcdcd;
+    background-color: #efefef;
+    margin: 0px;
+    padding: 10px;
+}
+
+.linkButton:hover {
+    background-color: #ddd;
+}
+
+/* Account Forms
+---------------------------------*/
+.accountForm label {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.accountForm p {
+    padding: 5px 0px 5px 0px;
+}
+
+input[type="password"]
+{
+    border: 1px solid #cdcdcd;
+}
+
+/* Checkout
+---------------------------------*/
+#checkout h2 {
+    width: 30%;
+    border-bottom: 1px dashed #cdcdcd;
+    margin: 25px 0px 20px 0px;
+}
+
+#checkout label {
+    font-weight: bold;
+    padding-right: 5px;
+    width: 10em;
+    float:left;
+}
+
+#checkout p {
+    padding: 5px 0px 5px 0px;
+}
+
+#checkout input[type="submit"] {
+    padding: 5px 45px 5px 45px;
+}
+
+/* Home Page
+---------------------------------*/
+#featuredProductImage {
+    float: left;
+    width: 380px;
+}
+
+#featuredProductDetails
+{
+    float:left;
+    width: 250px;
+}
+
+#featuredProductDetails h3
+{
+    margin-bottom: 20px;
+}
+
+#featuredProductDetails .price {
+    font-size: 1em;
+    font-style: italic;
+    color: #999;
+    margin: 10px 0px 10px 0px;
+}
+
+#popularProducts {
+    clear:both;
+    padding-top:25px;
+}
+
+#popularProductsList {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#popularProductsList li {
+    float: left;
+    margin: 12px 32px 12px 32px;
+    text-align: center;
+}
+
+#popularProductsList li a img {
+    border: none;
+}
+
+/* Validation
+---------------------------------*/
+.validation-summary-errors,
+span.field-validation-error { 
+    color: #FF0000; 
+}
+
+input.field-validation-error  { 
+    border: 1px solid #FF0000;
+    background-color: #FFCCCC;
+}

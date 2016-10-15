@@ -1,0 +1,50 @@
+﻿@{
+    var english = "World";
+    var french = "tout le monde";
+    var german = "Welt";
+    var italian = "mondo";
+    var spanish = "mundo";
+    
+    if (IsPost)
+    {
+        english = Request["Username"] + ". Welcome to WebMatrix!";
+        french = Request["Username"] + ". Bienvenue a WebMatrix!"; 
+        german = Request["Username"] + ". Willkommen auf WebMatrix!";
+        italian = Request["Username"] + ". Benvenuti a WebMatrix!" ;
+        spanish = Request["Username"] + ". Bienvenido a WebMatrix!";
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Hello World</title>
+    </head>
+    <body>
+        <h1>Hello @english</h1>
+        <p>The date and time here is @DateTime.Now</p>
+        <form method="post" action="">
+            <div>
+                <label for="Username">Please enter your name:</label>
+                <input type="text" name="Username" />
+                <input type="submit" value="Go" />
+            </div>
+        </form>
+        <ul>
+            <li>
+                Bonjour @french
+            </li>  
+            <li>
+                Hallo @german
+            </li>
+            <li>
+                Ciao @italian
+            </li>
+            <li>
+                Hola @spanish
+            </li>
+        </ul>
+    </body>
+</html>

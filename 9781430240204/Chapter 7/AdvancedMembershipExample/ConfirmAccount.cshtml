@@ -1,0 +1,38 @@
+﻿@{
+
+    bool confirmed = false;
+    var confirmationToken = Request["confirmationToken"];
+
+    WebSecurity.Logout();
+    
+    // Attempt account confirmation
+    if (!confirmationToken.IsEmpty()) {
+        if (WebSecurity.ConfirmAccount(confirmationToken)) {
+            confirmed = true;
+        }
+    }
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Registration Confirmation</title>
+    </head>
+    <body>
+        <h1>Registration Confirmation</h1>
+        
+        @if (confirmed)
+        {
+            <p>
+                Your registration is confirmed. 
+                You can now <a href="Login">login</a>.
+            </p>
+        }
+        else
+        {
+            <p>Unable to confirm the registration.</p>
+        }
+    </body>
+</html>
+

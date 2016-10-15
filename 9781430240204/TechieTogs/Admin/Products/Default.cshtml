@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Products";
+
+    var db = Database.Open("TechieTogsData");
+    var sqlCommand = "SELECT Products.ProductId, Products.Title, Categories.CategoryTitle " +
+                     "FROM Products " + 
+                     "INNER JOIN Categories ON Products.Category = Categories.CategoryId " +
+                     "ORDER BY title";
+
+    var result = db.Query(sqlCommand);
+                    
+    var productsGrid = new WebGrid(source: result,
+                                    rowsPerPage: 20);
+
+}
+
+<h1>Products Summary</h1>
+<a href="ProductDetails">Add New Product</a>
+<div class="grid">
+    @productsGrid.GetHtml(
+        tableStyle: "grid",
+        headerStyle: "gridHeader",
+        alternatingRowStyle: "gridAlt",
+        footerStyle: "gridFooter",
+        columns: productsGrid.Columns(
+            productsGrid.Column("ProductId",
+                              "Product ID"),
+            productsGrid.Column("Title",
+                              "Product Title"),
+            productsGrid.Column("CategoryTitle",
+                              "Category"),
+            productsGrid.Column(null,
+                              null,
+                              format: @<text>
+                                          <a href="ProductDetails/@item.ProductId">
+                                              Details
+                                          </a>
+                                      </text>)
+        )
+    )
+</div>

@@ -1,0 +1,69 @@
+﻿@{  
+    WebImage originalImage = null;
+    WebImage watermarkImage = null;
+    WebImage watermarkedImage = null;
+    var originalFileName = "";
+    var watermarkFileName = "";
+
+    if(IsPost)
+    {
+        originalImage = WebImage.GetImageFromRequest("originalImage");
+        watermarkImage = WebImage.GetImageFromRequest("watermarkImage");
+        if((originalImage != null) && (watermarkImage != null))
+        {
+            originalFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(originalImage.FileName);
+            originalImage.Save(@"~\images\" + originalFileName);
+            
+            watermarkFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(watermarkImage.FileName);
+            watermarkImage.Save(@"~\images\" + watermarkFileName);
+            
+            watermarkedImage = originalImage.AddImageWatermark(watermarkImage,
+                                                               width: 150, height: 50, 
+                                                               horizontalAlign:"Right", 
+                                                               verticalAlign:"Top", 
+                                                               opacity:100,  padding:10); 
+
+            watermarkedImage.Save(@"~\images\watermarked_" + originalFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Image Watermark</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Original image:", "originalImage")
+            <input type="file" name="originalImage" /><br/>
+            @Html.Label("Watermark image:", "watermarkImage")
+            <input type="file" name="watermarkImage" /><br/>
+            <input type="submit" value="Upload Images" />
+        </form>
+            
+        <h1>Uploaded Images</h1>
+        
+        @if(originalFileName != "")
+        {
+            <div style="float:left; margin-right: 10px;">
+                Original Image: <br />
+                <img src="images/@originalFileName" alt="Original Image" />
+            </div>
+            <div>
+                Watermark Image: <br />
+                <img src="images/@watermarkFileName" alt="Watermark Image" />
+            </div>
+            <div style="clear:both;">
+                Watermarked Image:<br />
+                <img src="images/watermarked_@(originalFileName)" alt="Watermarked Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>

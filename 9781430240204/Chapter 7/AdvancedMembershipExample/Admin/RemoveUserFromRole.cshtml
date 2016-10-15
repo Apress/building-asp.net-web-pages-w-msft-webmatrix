@@ -1,0 +1,40 @@
+﻿@{
+    var userName = Request["userName"];
+    var roleName = Request["roleName"];
+    
+    if(IsPost)
+    {
+        // Remove user from role
+        if (Roles.IsUserInRole(userName, roleName))
+        {
+            Roles.RemoveUsersFromRoles(
+                new [] { userName }.ToArray(),
+                new [] { roleName }.ToArray()
+            );
+        }
+        
+        Response.Redirect("RoleDetails?roleName=" + roleName);
+    }
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Remove User From Role</title>
+    </head>
+    <body>
+        <h1>Remove User from Role</h1>
+        <p>Are you sure you wish to remove user @userName from the @roleName role?</p>
+        <p>
+            <form action="" method="post">
+                @Html.Hidden("roleName", roleName)
+                @Html.Hidden("userName", userName)
+                <input type="button" 
+                    onclick="window.location.href='../Admin/RoleDetails.cshtml?roleName=@roleName';" 
+                    value="Cancel" />
+                <input type="submit" value="Remove" />
+            </form>
+        </p>
+    </body>
+</html>

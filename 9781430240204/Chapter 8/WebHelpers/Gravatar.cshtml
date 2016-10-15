@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Gravatar Examples</h1>
+        <p><a href="Default">Back to menu</a></p>
+        <div>
+            @* Email address has associated Gravatar account. *@
+            @Gravatar.GetHtml("stevelydford@gmail.com")
+        </div>
+        <div>
+            @* Email address does not have an associated Gravatar
+            account. Default image will be displayed instead. *@
+            @Gravatar.GetHtml("noSuchUser@example.com")
+        </div>
+    </body>
+</html>

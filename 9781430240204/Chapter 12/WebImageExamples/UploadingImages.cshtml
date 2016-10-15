@@ -1,0 +1,43 @@
+﻿@{  
+    WebImage image = null;
+    var imageFileName = "";
+
+    if(IsPost)
+    {
+        image = WebImage.GetImageFromRequest();
+        if(image != null)
+        {
+            imageFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(image.FileName);
+
+            image.Save(@"~\images\" + imageFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Uploading Images</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Image to upload:", "imageUpload")
+            <input type="file" name="imageUpload" /><br/>
+            <input type="submit" value="Upload Image" />
+        </form>
+            
+        <h1>Uploaded Image</h1>
+        
+        @if(imageFileName != "")
+        {
+            <div>
+                <img src="images/@imageFileName" alt="Uploaded Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>

@@ -1,0 +1,20 @@
+﻿@{
+    var sales = new Dictionary<string, int>()
+        {
+            { "Books", 10 },
+            { "DVDs", 7 },
+            { "Games", 12 },
+            { "Music", 5 },
+            { "Toys", 9 }
+        };
+    
+    var myChart = new Chart(width: 600, height: 400)
+        .AddTitle("Sales")
+        .AddSeries(
+            chartType: "Pie",
+            name: "ProductSales",
+            xValue: sales.Keys,
+            yValues: sales.Values)
+        .Write();
+}
+

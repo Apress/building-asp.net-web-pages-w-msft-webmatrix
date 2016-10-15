@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Admin Users";
+    
+    var userToAdd = "";
+    var role = "Admin";
+    
+    if(IsPost)
+    {
+        userToAdd = Request["userToAdd"];
+        
+        if(userToAdd != null)
+        {
+            // Add User to Role
+            if (WebSecurity.UserExists(userToAdd) &&
+                !Roles.IsUserInRole(userToAdd, role))
+            {
+                Roles.AddUsersToRoles(
+                    new [] { userToAdd }.ToArray(),
+                    new [] { role }.ToArray()
+                );
+            }
+            else
+            {
+                ModelState.AddError("userToAdd", "Unable to add user");
+            }
+        }
+        else if (Request["userToRemove"] != null)
+        {
+            // Remove User from Role
+            
+            var userToRemove = Request["userToRemove"];
+            if (Roles.IsUserInRole(userToRemove, role))
+            {
+                Roles.RemoveUsersFromRoles(
+                    new [] { userToRemove }.ToArray(),
+                    new [] { role }.ToArray()
+                );
+            }
+        }
+    }
+    
+    var users = Roles.GetUsersInRole(role);
+}
+
+<h1>Admin Users</h1>
+
+<table class="grid">
+    <tr>
+        <th colspan="3" class="gridHeader">User</th>
+    </tr>
+    @foreach (var user in users)
+    {
+        <tr>
+            <td id="mainColumn">
+                @user
+            </td>
+            <td>
+                @{
+                    var buttonState = "";
+                    if(user == WebSecurity.CurrentUserName)
+                    {
+                        buttonState = "disabled=disabled";
+                    }
+                }
+                    <form action="" method="post">
+                        @Html.Hidden("userToRemove", user)
+                        <input type="submit" value="Remove from Role" @buttonState />
+                    </form>
+
+            </td>
+        </tr> 
+    }
+</table>
+
+<h2>Add Admin User</h2>
+<form action="" method="post">
+    <p>
+        User Name:
+        @Html.TextBox("userToAdd", userToAdd)
+        <input type="submit" value="Add" />
+        @Html.ValidationMessage("userToAdd")
+    </p>
+</form>

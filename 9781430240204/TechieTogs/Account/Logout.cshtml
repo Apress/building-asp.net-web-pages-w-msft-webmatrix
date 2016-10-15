@@ -1,0 +1,12 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    Page.Title = "Log Out";
+    
+    WebSecurity.Logout();
+    
+ }
+
+<h1>Log Out</h1>
+<p>You have been logged out from the site.</p>
+<p><a href="@Href("~/Default")">Return to home page</a></p>

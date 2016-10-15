@@ -1,0 +1,88 @@
+﻿@{
+    var employeeId  = UrlData[0];
+    if (employeeId.IsEmpty()) {
+         Response.Redirect(@Href("~/Default"));
+    }
+    
+    var forenames = "";
+    var surname = "";
+    var dateOfBirth = "";
+    var emailAddress = "";
+    var role = "";
+    
+    var db = Database.Open("DataExample");
+    
+    if (IsPost) {
+        
+        forenames = Request["forenames"];
+        surname = Request["surname"];
+        dateOfBirth = Request["dateOfBirth"];
+        emailAddress = Request["emailAddress"];
+        role = Request["role"];
+        
+        var sqlCommand = "UPDATE Employees SET Forenames = @0, Surname = @1, " +
+                "DateOfBirth = @2, EmailAddress = @3, Role = @4 " + 
+                "WHERE EmployeeId = @5";
+        db.Execute(sqlCommand, forenames, surname, dateOfBirth, emailAddress, role, employeeId);
+           
+        Response.Redirect(@Href("~/default"));
+    }
+
+    
+    var sqlSelect = "SELECT * FROM Employees WHERE EmployeeId=@0";
+
+    var row = db.QuerySingle(sqlSelect, employeeId);
+    
+    forenames = row.Forenames;
+    surname = row.Surname;
+    dateOfBirth = row.DateOfBirth.ToShortDateString();
+    emailAddress = row.EmailAddress;
+    role = row.Role;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Edit Employee Record</title>
+        <style>
+            fieldset { margin: 0.5em 0; padding: 0.4em; }
+            fieldset div { clear: left; padding: 0.3em 0; }
+            fieldset label { float: left; width: 7em; text-align: right; 
+                             padding-right: 0.4em; }
+            legend { text-transform:uppercase; font-weight:bold; }
+        </style>
+    </head>
+    <body>
+        <h1>Edit Employee Record</h1>
+        <form action="" method="post">
+            <fieldset>
+                <legend>Employee Details</legend>
+                 <div>
+                    @Html.Label("Forenames: ", "forenames")
+                    @Html.TextBox("forenames", forenames)
+                </div>
+                <div>
+                    @Html.Label("Surname: ", "surname")
+                    @Html.TextBox("surname", surname)
+                </div>
+                <div>
+                    @Html.Label("Date of Birth: ", "dateOfBirth")
+                    @Html.TextBox("dateOfBirth", dateOfBirth)
+                </div>
+                <div>
+                    @Html.Label("Email Address: ", "emailAddress")
+                    @Html.TextBox("emailAddress", emailAddress)
+                </div>
+                <div>
+                    @Html.Label("Role: ", "role")
+                    @Html.TextBox("role", role)
+                </div>
+            </fieldset>
+            <div>
+                <input type="submit" value="Update Employee Record" />
+            </div>
+        </form>
+    </body>
+</html>

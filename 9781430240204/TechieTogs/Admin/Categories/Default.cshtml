@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Categories";
+    
+    var categoryTitle = "";
+    
+    var db = Database.Open("TechieTogsData");
+    
+    if(IsPost && !Request["categoryTitle"].IsEmpty())
+    {
+        categoryTitle = Request["categoryTitle"];
+        if(!Admin.CategoryExists(categoryTitle))
+        {
+            var sqlInsert = "INSERT INTO Categories (CategoryTitle) VALUES (@0)";
+            db.Execute(sqlInsert, categoryTitle);
+        }
+        else
+        {
+            ModelState.AddError("categoryTitle", "Category already exists");
+        }
+    }
+    
+    var sqlCommand = "SELECT * FROM Categories";
+    var categories = db.Query(sqlCommand);
+    
+}
+
+<h1>Categories</h1>
+
+<table class="grid">
+    <tr>
+        <th colspan="3" class="gridHeader">Category</th>
+    </tr>
+    @foreach (var category in categories)
+    {
+        <tr>
+            <td id="mainColumn">
+                @category.categoryTitle
+            </td>
+            <td>
+                <a href="EditCategory/@category.categoryId">Edit</a>
+            </td>
+            <td>
+                <a href="DeleteCategory/@category.categoryId">Delete</a>
+            </td>
+        </tr> 
+    }
+</table>
+
+<h2>Add New Category</h2>
+<form action="" method="post">
+    <p>
+        Category Title:
+        @Html.TextBox("categoryTitle", categoryTitle)
+        <input type="submit" value="Add" />
+        @Html.ValidationMessage("categoryTitle")
+    </p>
+</form>

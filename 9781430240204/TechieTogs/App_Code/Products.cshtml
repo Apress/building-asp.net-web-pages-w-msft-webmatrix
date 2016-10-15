@@ -1,0 +1,69 @@
+﻿@* Product Functions *@
+@functions {
+
+    public static string GetProductNameFromId(int productID)
+    {
+        var db = Database.Open("TechieTogsData");
+        var sqlQuery = "SELECT title FROM Products WHERE productID = @0";
+        return db.QuerySingle(sqlQuery, productID).title;
+    }
+     
+}
+
+@* Product Helpers *@
+@helper ProductsDropDownList(string name, string selectedValue)
+{
+    var optionList = new List<SelectListItem>();
+    var db = Database.Open("TechieTogsData");
+    
+    var sqlCommand = "SELECT productId, title FROM Products ORDER BY title";
+    var result = db.Query(sqlCommand);
+    
+    // Add "Not Selected..." option 
+    optionList.Add(new SelectListItem { Value = "0", Text = "Not selected..." });
+    
+    foreach(var item in result)
+    {
+        optionList.Add(new SelectListItem { Value = item.productId.ToString(), Text = item.title });
+    }
+
+    @Html.DropDownList(name, null , optionList, selectedValue, null)
+}
+
+@helper CategoriesDropDownList(string name, string selectedValue)
+{
+    var optionList = new List<SelectListItem>();
+    var db = Database.Open("TechieTogsData");
+    
+    var sqlCommand = "SELECT categoryId, categoryTitle FROM Categories " +
+                     "ORDER BY categoryTitle";
+    var result = db.Query(sqlCommand);
+    
+    foreach(var item in result)
+    {
+        optionList.Add(new SelectListItem { Value = item.categoryId.ToString(),
+                                            Text = item.categoryTitle });
+    }
+
+    @Html.DropDownList(name, null , optionList, selectedValue, null)
+}
+
+@helper ShowProductImage(string productId)
+{
+    var imagePath = @"~/ProductImages/" + productId + ".png";
+    if (!File.Exists(Server.MapPath(imagePath)))
+    {
+        imagePath = "~/ProductImages/noImage.png";
+    }
+    <img src="@Href(imagePath)" alt="Product Image"/>
+}
+
+@helper ShowProductThumbnail(string productId)
+{
+    var imagePath = @"~/ProductImages/" + productId + "_thumb.png";
+    if (!File.Exists(Server.MapPath(imagePath)))
+    {
+        imagePath = "~/ProductImages/noThumb.png";
+    }
+    <img src="@Href(imagePath)" alt="Product Image"/>
+}

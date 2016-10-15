@@ -1,0 +1,35 @@
+﻿@{
+    var roleName = Request["roleName"];
+    
+    if(IsPost)
+    {
+        // Delete role
+        if(Roles.GetUsersInRole(roleName).Length == 0 && !roleName.IsEmpty())
+        {
+            Roles.DeleteRole(roleName, true);
+        }
+        
+        Response.Redirect("Roles");
+    }
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Delete Role</title>
+    </head>
+    <body>
+        <h1>Delete Role</h1>
+        <p>Are you sure you wish to delete the @roleName role?</p>
+        <p>
+            <form action="" method="post">
+                @Html.Hidden("roleName", roleName)
+                <input type="button" 
+                    onclick="window.location.href='../Admin/RoleDetails.cshtml?roleName=@roleName';" 
+                    value="Cancel" />
+                <input type="submit" value="Delete" />
+            </form>
+        </p>
+    </body>
+</html>

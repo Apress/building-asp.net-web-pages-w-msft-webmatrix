@@ -1,0 +1,56 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    
+    var categoryTitle = UrlData[0];
+    
+    if (categoryTitle.IsEmpty())
+    {
+        Response.Redirect("/Default");
+    }
+    
+    Page.Title = categoryTitle;
+    
+    var db = Database.Open("TechieTogsData");   
+    var sqlSelect = "SELECT productID, title, price FROM Products " +
+                "LEFT OUTER JOIN Categories ON Products.category = Categories.categoryID " +
+                "WHERE Categories.categoryTitle = @0";
+    
+    var products = db.Query(sqlSelect, categoryTitle);
+    
+}
+
+<div id="contentTitle">
+    <h1>@categoryTitle</h1>
+</div>
+
+@if (products.Count() == 0)
+{
+    <p>
+        No items found in this category. 
+        Try browsing one of the categories listed to the left.
+    </p>
+}
+else
+{
+    <ul id="productsList">
+        @foreach (var item in products) {
+            <li>
+                <h3>
+                    <a href="/ProductDetails/@item.productID">@item.title</a>
+                </h3>
+                <p>
+                    @Products.ShowProductThumbnail(item.productID.ToString())
+                </p>
+                <p class="price">
+                    £@item.price
+                </p>
+                <p>
+                    <a href="/ProductDetails/@item.productID" class="detailsButton">
+                        More Details
+                    </a>
+                </p>
+            </li>
+        }
+    </ul>
+}

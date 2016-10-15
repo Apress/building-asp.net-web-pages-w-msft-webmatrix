@@ -1,0 +1,55 @@
+﻿@{
+    var db = Database.Open("DataExample");
+    var sqlCommand = "SELECT * FROM Employees ORDER BY Surname";
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Employees</title>
+    <style>
+        table { border-spacing: 0px; border-collapse: collapse; }
+        th, td { border: 1px solid #CCC; padding: 10px; }
+    </style>
+    </head>
+    <body>
+        <h1>Employees</h1>
+        <p>
+            <a href="add">Add an Employee</a>
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee Id</th>
+                    <th>Forenames</th>
+                    <th>Surname</th>
+                    <th>Date Of Birth</th>
+                    <th>Email Address</th>
+                    <th>Role</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in db.Query(sqlCommand))
+                { 
+                    <tr>
+                        <td>@row.EmployeeId</td>
+                        <td>@row.Forenames</td>
+                        <td>@row.Surname</td>
+                        <td>@row.DateOfBirth.ToLongDateString()</td>
+                        <td>@row.EmailAddress</td>
+                        <td>@row.Role</td>
+                        <td>
+                            <a href="Edit/@row.EmployeeId">Edit</a> | 
+                            <a href="Delete/@row.EmployeeId">Delete</a>
+                        </td>
+
+                    </tr>  
+                }
+            </tbody>
+        </table>
+    </body>
+</html>
+

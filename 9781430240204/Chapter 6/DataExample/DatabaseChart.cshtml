@@ -1,0 +1,10 @@
+﻿@{
+    var db = Database.Open("DataExample");
+    var sqlCommand = "SELECT Description, TotalSales FROM Products";
+    var chartData = db.Query(sqlCommand);
+    var myChart = new Chart(width: 600, height: 400)
+        .AddTitle("Product Sales")
+        .DataBindTable(chartData, "Description")
+        .Write();
+}
+

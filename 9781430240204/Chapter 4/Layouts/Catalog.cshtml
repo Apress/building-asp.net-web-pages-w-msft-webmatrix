@@ -1,0 +1,18 @@
+﻿@{    
+    var categories = new List<string>() { "Books", "Films", "Music", "Games", "Toys" };
+    PageData["categories"] = categories;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PageData Example</title>
+    </head>
+    <body>
+        <h1>PageData Example</h1>
+        @RenderPage("/Shared/_Categories.cshtml")
+    </body>
+</html>
+

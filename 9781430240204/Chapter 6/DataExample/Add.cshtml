@@ -1,0 +1,66 @@
+﻿@{
+    if (IsPost) {
+        
+        var forenames = Request["forenames"];
+        var surname = Request["surname"];
+        var dateOfBirth = Request["dateOfBirth"];
+        var emailAddress = Request["emailAddress"];
+        var role = Request["role"];
+        
+        var db = Database.Open("DataExample");
+        var sqlCommand = "INSERT INTO Employees " +
+                "(Forenames, Surname, DateOfBirth, EmailAddress, Role) " +
+                "VALUES (@0, @1, @2, @3, @4)";
+        db.Execute(sqlCommand, forenames, surname, dateOfBirth, emailAddress, role);
+           
+        Response.Redirect("~/Default");
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Add an Employee</title>
+        <style>
+            fieldset { margin: 0.5em 0; padding: 0.4em; }
+            fieldset div { clear: left; padding: 0.3em 0; }
+            fieldset label { float: left; width: 7em; text-align: right; 
+                             padding-right: 0.4em; }
+            legend { text-transform:uppercase; font-weight:bold; }
+        </style>
+    </head>
+    <body>
+        <h1>Add an Employee</h1>
+        <form action="add.cshtml" method="post">
+            <fieldset>
+                <legend>Employee Details</legend>
+                 <div>
+                    @Html.Label("Forenames: ", "forenames")
+                    @Html.TextBox("forenames")
+                </div>
+                <div>
+                    @Html.Label("Surname: ", "surname")
+                    @Html.TextBox("surname")
+                </div>
+                <div>
+                    @Html.Label("Date of Birth: ", "dateOfBirth")
+                    @Html.TextBox("dateOfBirth")
+                </div>
+                <div>
+                    @Html.Label("Email Address: ", "emailAddress")
+                    @Html.TextBox("emailAddress")
+                </div>
+                <div>
+                    @Html.Label("Role: ", "role")
+                    @Html.TextBox("role")
+                </div>
+            </fieldset>
+            <div>
+                <input type="submit" value="Add Employee" />
+            </div>
+        </form>
+    </body>
+</html>
+

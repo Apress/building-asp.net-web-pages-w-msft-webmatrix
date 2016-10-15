@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Delete Category";
+    
+    var categoryId  = UrlData[0];
+    if (categoryId.IsEmpty()) {
+         Response.Redirect("~/Admin/Categories/");
+    }
+    
+    var db = Database.Open("TechieTogsData");
+    
+    if (IsPost)
+    {
+        var sqlDelete = "DELETE FROM Categories WHERE CategoryId = @0";
+        db.Execute(sqlDelete, categoryId);
+        Response.Redirect("~/Admin/Categories/");
+    }
+
+    var sqlSelect = "SELECT * FROM Categories WHERE categoryId = @0";
+    var category = db.QuerySingle(sqlSelect, categoryId);
+}
+
+<h1>Delete Category</h1>
+
+@if (!Admin.CategoryIsEmpty(categoryId))
+{
+    <p>
+        Unable to delete the @category.CategoryTitle category as it has associated products. 
+    </p>
+}
+else
+{
+    <p>
+        Are you sure you want to delete the @category.CategoryTitle category?
+    </p>
+    <p style="margin:">
+        <form action="" method="post" id="deleteForm">
+            <input type="button" 
+                onclick="window.location = '@Href("~/Admin/Categories/")';" 
+                value="Cancel" />
+            <input type="submit" value="Delete" />
+        </form>
+    </p>
+}

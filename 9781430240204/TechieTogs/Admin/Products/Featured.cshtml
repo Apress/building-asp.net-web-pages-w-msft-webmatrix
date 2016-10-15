@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Featured Product";
+    
+    var featuredProduct = "";
+    
+    var db = Database.Open("TechieTogsData");
+    
+    if(IsPost)
+    {
+        featuredProduct = Request["featuredProduct"];
+        var sqlUpdate = "UPDATE Settings SET featuredProduct = @0";
+        db.Execute(sqlUpdate, featuredProduct);
+        
+        Response.Redirect("~/Admin");
+    }
+    
+    var sqlCommand = "SELECT featuredProduct FROM Settings";
+    featuredProduct = db.QuerySingle(sqlCommand).featuredProduct.ToString();
+}
+
+<h1>Featured Product</h1>
+
+<form action="Featured" method="post">
+    <p>
+        Featured product:
+        @Products.ProductsDropDownList("featuredProduct", featuredProduct)
+        <input type="submit" value="Save" />
+    </p>
+</form>

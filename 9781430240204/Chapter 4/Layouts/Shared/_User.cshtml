@@ -1,0 +1,25 @@
+﻿@if (PageData["user"]) {
+    <div>
+        <h2>Welcome!</h2>]
+        <!-- More info about user here -->
+    </div>
+}
+else {
+    <div>
+        <form method="post" action="login.cshtml">
+            <h2>Login:</h2>
+            <div>
+                <label for="username">Username: </label>
+                <input type="text" name="username" />
+            </div>
+            <div>
+                <label for="password">Password: </label>
+                <input type="password" name="password" />
+            </div>
+            <div>
+                <input type="submit" value="Login" />
+            </div>
+        </form>
+    </div>
+}
+

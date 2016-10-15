@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Shared/Layouts/_AdminLayout.cshtml";
+    Page.Title = "Orders";
+    
+    var showShippedOrders = false;
+    
+    if(IsPost)
+    {
+        showShippedOrders = Request["showShippedOrders"].AsBool();
+    }
+
+    var db = Database.Open("TechieTogsData");
+    var sqlCommand = "SELECT Orders.OrderId, Orders.OrderShipped, Orders.OrderTotal, " + 
+                     "Orders.OrderDateTime, UserProfile.Email FROM Orders " + 
+                     "INNER JOIN UserProfile ON Orders.UserId = UserProfile.UserId " +
+                     "WHERE OrderShipped = @0 " + 
+                     "ORDER BY OrderDateTime DESC";
+
+    var result = db.Query(sqlCommand, showShippedOrders);
+                    
+    var ordersGrid = new WebGrid(source: result,
+                                 rowsPerPage: 20);
+
+}
+
+<h1>Orders Summary</h1>
+<form action="Default" method="post">
+    <p>
+        Unshipped Orders @Html.RadioButton("showShippedOrders", "false", !showShippedOrders)
+        Shipped Orders @Html.RadioButton("showShippedOrders", "true", showShippedOrders)
+        <input type="submit" value="Go"/>
+    </p>
+</form>
+<div class="grid">
+    @ordersGrid.GetHtml(
+        tableStyle: "grid",
+        headerStyle: "gridHeader",
+        alternatingRowStyle: "gridAlt",
+        footerStyle: "gridFooter",
+        columns: ordersGrid.Columns(
+            ordersGrid.Column("OrderId",
+                              "Order ID"),
+            ordersGrid.Column("Email",
+                              "User",
+                              format: @<text>
+                                          <a href="mailto:@item.Email">
+                                              @item.Email
+                                          </a>
+                                      </text>),
+            ordersGrid.Column("OrderShipped",
+                              "Shipped?"),
+            ordersGrid.Column("OrderTotal",
+                              "Total Value",
+                              format: @<text>
+                                          £@item.OrderTotal
+                                      </text>),
+            ordersGrid.Column("OrderDateTime",
+                              "Ordered"),
+            ordersGrid.Column(null,
+                              null,
+                              format: @<text>
+                                          <a href="OrderDetails/@item.OrderId">
+                                              Details
+                                          </a>
+                                      </text>)
+        )
+    )
+</div>

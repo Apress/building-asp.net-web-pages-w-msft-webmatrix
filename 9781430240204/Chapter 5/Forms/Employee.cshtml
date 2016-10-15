@@ -1,0 +1,105 @@
+﻿@{
+    var forenames = "";
+    var surname = "";
+    var dateOfBirth = DateTime.MinValue;
+    var department = "";
+    var employeeId = "";
+    
+    if (IsPost)
+    {
+        forenames = Request["forenames"];
+        surname = Request["surname"];
+        dateOfBirth = Request["dateOfBirth"].AsDateTime();
+        department = Request["department"];
+        employeeId = Request["employeeId"];
+        
+        if (surname.IsEmpty())
+        {
+            ModelState.AddError("surname", "The Surname field is required");
+        }
+        if (employeeId.IsEmpty())
+        {
+            ModelState.AddError("employeeID", "The Employee ID field is required");
+        }
+    
+        if (ModelState.IsValid)
+        {
+            Response.Redirect("Success.cshtml");
+        }
+    }     
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Add Employee</title>
+    <style>
+        /* Form styles */
+        fieldset { margin: 0.5em 0; padding: 0.4em; }
+        fieldset div { clear: left; padding: 0.3em 0; }
+        fieldset label { float: left; width: 7em; text-align: right; padding-right: 0.4em;}
+        legend { text-transform:uppercase; font-weight:bold; }
+        
+        /* Validation styles */
+        .validation-summary-errors { font-weight: bold; color: #FF0000; }
+        span.field-validation-error { color: #FF0000; }
+        input.field-validation-error { border: 1px solid #FF0000; background-color: #FFCCCC; }
+    </style>
+</head>
+<body>
+    <h1>Add Employee</h1>
+    @Html.ValidationSummary("Please correct the following errors:")
+    <form action="" method="post">
+        <fieldset>
+            <legend>Personal Details</legend>
+            <div>
+                @Html.Label("Forenames: ", "forenames")
+                @Html.TextBox("forenames", forenames)
+            </div>
+            <div>
+                @Html.Label("Surname: ", "surname")
+                @Html.TextBox("surname", surname)
+                @Html.ValidationMessage("surname")
+            </div>
+            <div>
+                @Html.Label("Date of Birth: ", "dateOfBirth")
+                @Html.TextBox("dateOfBirth", dateOfBirth.ToShortDateString())
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Company Details</legend>
+                <div>
+                    @Html.Label("Department: ", "department")
+                    @{
+                        var departmentList = new List<SelectListItem>()
+                        {
+                            new SelectListItem { Value = "admin", Text = "Administration" },
+                            new SelectListItem { Value = "hr", Text = "Human Resources" },
+                            new SelectListItem { Value = "catering", Text = "Catering" },
+                            new SelectListItem { Value = "dev", 
+                                                 Text = "Product Development" },
+                            new SelectListItem { Value = "sales", 
+                                                 Text = "Sales and Marketing" },
+                        };  
+                    }
+                    @Html.DropDownList("department", "Not selected", departmentList,
+                                        department, null)
+                </div>
+                <div>
+                    <div>
+                        @Html.Label("Employee ID: ", "employeeID")
+                        @Html.TextBox("employeeID", employeeId, new { maxlength = 4 })
+                        @Html.ValidationMessage("employeeID")
+                    </div>
+                </div>
+        </fieldset>
+        <div>
+            <input type="submit" value="Add Employee" />
+        </div>
+    </form>
+</body>
+</html>
+
+
+

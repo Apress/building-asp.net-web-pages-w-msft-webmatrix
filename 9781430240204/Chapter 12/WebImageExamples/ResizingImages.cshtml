@@ -1,0 +1,56 @@
+﻿@{  
+    WebImage originalImage = null;
+    WebImage thumbnailImage = null;
+    var imageFileName = "";
+
+    if(IsPost)
+    {
+        originalImage = WebImage.GetImageFromRequest();
+        if(originalImage != null)
+        {
+            imageFileName = Guid.NewGuid().ToString() + "_" +
+                Path.GetFileName(originalImage.FileName);
+
+            originalImage.Save(@"~\images\" + imageFileName);
+            
+            thumbnailImage = originalImage.Resize(width: 120,
+                                                 height:120,
+                                                 preserveAspectRatio: true);
+            
+            thumbnailImage.Save(@"~\images\thumb_" + imageFileName);
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Resizing Images</title>
+</head>
+    <body>
+        <form action="" method="post" enctype="multipart/form-data">
+            @Html.Label("Image to upload:", "imageUpload")
+            <input type="file" name="imageUpload" /><br/>
+            <input type="submit" value="Upload Image" />
+        </form>
+            
+        <h1>Uploaded Images</h1>
+        
+        @if(imageFileName != "")
+        {
+            <div>
+                Original Image: <br />
+                <img src="images/@imageFileName" alt="Original Image" />
+            </div>
+            <div>
+                Thumbnail Image: <br />
+                <img src="images/thumb_@(imageFileName)" alt="Thumbnail Image" />
+            </div>
+        }
+        
+        <p><a href="Default">Back to menu</a></p>
+    </body>
+</html>
+

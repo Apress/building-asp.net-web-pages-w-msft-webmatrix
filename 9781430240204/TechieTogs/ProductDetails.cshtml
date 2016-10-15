@@ -1,0 +1,74 @@
+﻿@{
+    
+    Layout = "~/Shared/Layouts/_Layout.cshtml";
+    
+    var productID = !UrlData[0].IsEmpty() ? UrlData[0] : "0";
+    
+    var db = Database.Open("TechieTogsData");   
+    var sqlSelect = "SELECT * FROM Products WHERE productID = @0";
+    
+    var product = db.QuerySingle(sqlSelect, productID);
+    
+}
+
+@if (product == null)
+{
+    <p>
+        Unable to fetch product details.
+        Try browsing one of the categories listed to the left.
+    </p>
+}
+else
+{
+    Page.Title = product.title;
+    <text>
+        <h1>@product.title</h1>
+        <div id="productDetails">
+            <p class="price">
+                £@product.price
+            </p>
+            <p>@Products.ShowProductImage(productID)</p>
+            <p>@product.description</p>
+        </div>
+        <div id="orderForm">
+            <form action="/Cart" method="post">
+                <fieldset>
+                    <legend>Place Order</legend>
+                    <p>
+                        <label for="size">Size:</label>
+                        <select name="size">
+                            <option value="S">Small</option>
+                            <option value="M">Medium</option>
+                            <option value="L">Large</option>
+                            <option value="XL">Extra Large</option>
+                        </select>
+                    </p>
+                    <p>
+                        @Html.Hidden("productID", productID)
+                        @Html.Hidden("price", product.price)
+                        <input type="submit" value="Add to Cart" />
+                    </p>
+                </fieldset>
+            </form>
+            <fieldset>
+                <legend>Share</legend>
+                <p>
+                    @GooglePlusOne.PlusOneButton()
+                </p>
+                <p>
+                    @Twitter.TweetButton(tweetText: "Check this out on the TechieTops site!", 
+                                        userName: "stevelydford",
+                                        dataCount: "horizontal")
+                </p>
+                <p>
+                    @{ string currentUrl = Request.Url.ToString(); }
+                    @Facebook.LikeButton(currentUrl, 
+                                         width:230,
+                                         buttonLayout:"standard", 
+                                         height:25, 
+                                         showFaces:false)
+                </p>
+            </fieldset>
+        </div>
+    </text>
+}
